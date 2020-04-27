@@ -1,15 +1,12 @@
 "use strict";
 
-var divJSONFeedback;
-var divJSONAsString;
-
 window.addEventListener('load', Initieer);
 
 var dataLessen = {
   "BST1": [
     {
       "lesinhoud": "Web Frontend Advanced",
-      "module": "WFB",
+      "module": "WFA",
       "dag": "maandag",
       "lokaal": "K1.012"
     },
@@ -28,6 +25,8 @@ var dataLessen = {
   }
 };
 
+var divJSONFeedback;
+var divJSONAsString;
 var divJSONUitgebreid;
 var slcLocatie;
 
@@ -39,20 +38,17 @@ function Initieer() {
   slcLocatie = document.querySelector("#slcLocatie");
   divJSONAsString = document.querySelector("#divJSONAsString");
 
-  // Eventlistener
+  // Eventlisteners toevoegen
   slcLocatie.addEventListener("change", ToonInhoudLessen);
 
-
-  // Functie
+  // Startup Functies na inladen DOM
   VulInfo();
   VulSelect();
   ToonInhoudLessen();
-
-
 }
 
 
-// functies
+// Functies
 
 function VulSelect() {
   for (let locatie in dataLessen) {
@@ -64,40 +60,38 @@ function ToonInhoudLessen() {
   divJSONUitgebreid.innerHTML = '';
 
   let keuze = slcLocatie[slcLocatie.selectedIndex].text;
-  console.log(keuze);
+  //console.log(keuze);
   if (Array.isArray(dataLessen[keuze])) {
     for (let i = 0; i < dataLessen[keuze].length; i++) {
-      divJSONUitgebreid.appendChild(CreateDivision(dataLessen[keuze][i]));       
+      divJSONUitgebreid.appendChild(CreateDivision(dataLessen[keuze][i]));
     }
   }
   else {
-      divJSONUitgebreid.appendChild(CreateDivision(dataLessen[keuze]));
-    }
-
+    divJSONUitgebreid.appendChild(CreateDivision(dataLessen[keuze]));
   }
+}
 
 
-
-function CreateDivision(objectLes){
+//Creates a division from JSON-object
+function CreateDivision(objectLes) {
   let toevoeging = document.createElement('div');
-  let inhoudtoevoeging='';
-  for (let gegeven in objectLes){
+  let inhoudtoevoeging = '';
+  for (let gegeven in objectLes) {
     inhoudtoevoeging += `${gegeven} : ${objectLes[gegeven]} <br/> `;
-  }  
+  }
   toevoeging.classList.add("les");
   toevoeging.innerHTML = inhoudtoevoeging;
   return toevoeging;
-
 }
 
 function VulInfo() {
-   //let lessen = {"lesinhoud":"JavaScript", "module" : "WFA", "dag" : "maandag", "lokaal" : "K1.016", "gebouw" : "BST1", "uren" : 4};
-  
-    // Wanneer de JSON-file van een server komt moeten we deze omzetten naar een JSON-Object 
-   // let lessen = JSON.parse(JSONBinnenkomend);
+  let lesstring = '';
+  // INFO :
+  // Wanneer de JSON-file van een server komt moeten we deze omzetten naar een JSON-Object 
+  // let lessen = JSON.parse(JSONBinnenkomend);
 
   // Wijzigen van de inhoud
-  lessen.lesinhoud = "Web Frontend Advanced"; 
+  lessen.lesinhoud = "Web Frontend Advanced";
   lessen.lesgever = "Lector X";
 
   // Dot notatie
@@ -107,7 +101,7 @@ function VulInfo() {
   divJSONFeedback.innerHTML += ` <br/> De lessen ${lessen['lesinhoud']} gaan door in gebouw ${lessen['gebouw']}`;
 
   // Eventueel terug omzetten naar een string 
-  let lesstring = JSON.stringify(lessen);
+  lesstring = JSON.stringify(lessen);
   divJSONAsString.innerHTML = lesstring;
 
 }
