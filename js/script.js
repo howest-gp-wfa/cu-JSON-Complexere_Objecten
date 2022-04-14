@@ -1,107 +1,108 @@
 "use strict";
 
-window.addEventListener('load', Initieer);
+window.addEventListener('load', initialize);
 
-var dataLessen = {
+const lessonsData = {
   "BST1": [
     {
-      "lesinhoud": "Web Frontend Advanced",
+      "subject": "Web Frontend Advanced",
       "module": "WFA",
-      "dag": "maandag",
-      "lokaal": "K1.012"
+      "day": "maandag",
+      "room": "K1.012"
     },
     {
-      "lesinhoud": "Web Backend",
+      "subject": "Web Backend",
       "module": "WBA",
-      "dag": "Dinsdag",
-      "lokaal": "U.002"
+      "day": "Dinsdag",
+      "room": "U.002"
     }
   ],
   "BST5": {
-    "lesinhoud": "Datacommunicatie Intro",
+    "subject": "Datacommunicatie Intro",
     "module": "DCI",
-    "dag": "Woensdag",
-    "lokaal": "B208"
+    "day": "Woensdag",
+    "room": "B208"
   }
 };
 
-var divJSONFeedback;
-var divJSONAsString;
-var divJSONUitgebreid;
-var slcLocatie;
+let divJSONFeedback;
+let divJSONAsString;
+let divJSONExtended;
+let slcLocation;
 
 
-function Initieer() {
+function initialize() {
   // DOM elementen ophalen
   divJSONFeedback = document.querySelector("#divJSONFeedback");
-  divJSONUitgebreid = document.querySelector("#divJSONUitgebreid");
-  slcLocatie = document.querySelector("#slcLocatie");
+  divJSONExtended = document.querySelector("#divJSONExtended");
+  slcLocation = document.querySelector("#slcLocation");
   divJSONAsString = document.querySelector("#divJSONAsString");
 
   // Eventlisteners toevoegen
-  slcLocatie.addEventListener("change", ToonInhoudLessen);
+  slcLocation.addEventListener("change", showLessonsContent);
 
   // Startup Functies na inladen DOM
-  VulInfo();
-  VulSelect();
-  ToonInhoudLessen();
+  displayInfo();
+  fillSelectLocations();
+  showLessonsContent();
 }
 
 
 // Functies
 
-function VulSelect() {
-  for (let locatie in dataLessen) {
-    slcLocatie[slcLocatie.length] = new Option(locatie, locatie);
+function fillSelectLocations() {
+  for (let location in lessonsData) {
+    slcLocation[slcLocation.length] = new Option(location, location);
   }
 }
 
-function ToonInhoudLessen() {
-  divJSONUitgebreid.innerHTML = '';
+function showLessonsContent() {
+  divJSONExtended.innerHTML = '';
 
-  let keuze = slcLocatie[slcLocatie.selectedIndex].text;
-  //console.log(keuze);
-  if (Array.isArray(dataLessen[keuze])) {
-    for (let i = 0; i < dataLessen[keuze].length; i++) {
-      divJSONUitgebreid.appendChild(CreateDivision(dataLessen[keuze][i]));
+  const chosenLocation = slcLocation[slcLocation.selectedIndex].text;
+  //console.log(chosenLocation);
+  if (Array.isArray(lessonsData[chosenLocation])) {
+    for (let i = 0; i < lessonsData[chosenLocation].length; i++) {
+      divJSONExtended.appendChild(createDivision(lessonsData[chosenLocation][i]));
     }
   }
   else {
-    divJSONUitgebreid.appendChild(CreateDivision(dataLessen[keuze]));
+    divJSONExtended.appendChild(createDivision(lessonsData[chosenLocation]));
   }
 }
 
 
 //Creates a division from JSON-object
-function CreateDivision(objectLes) {
-  let toevoeging = document.createElement('div');
-  let inhoudtoevoeging = '';
-  for (let gegeven in objectLes) {
-    inhoudtoevoeging += `${gegeven} : ${objectLes[gegeven]} <br/> `;
+function createDivision(objectLesson) {
+  const divLesson = document.createElement('div');
+  let content = '';
+  for (let lessonHeader in objectLesson) {
+    content += `${lessonHeader} : ${objectLesson[lessonHeader]} <br/> `;
   }
-  toevoeging.classList.add("les");
-  toevoeging.innerHTML = inhoudtoevoeging;
-  return toevoeging;
+  divLesson.classList.add("les");
+  divLesson.innerHTML = content;
+  return divLesson;
 }
 
-function VulInfo() {
-  let lesstring = '';
+function displayInfo() {
+  let content = '';
   // INFO :
   // Wanneer de JSON-file van een server komt moeten we deze omzetten naar een JSON-Object 
-  // let lessen = JSON.parse(JSONBinnenkomend);
+  // let lessons = JSON.parse(JSONBinnenkomend);
 
-  // Wijzigen van de inhoud
-  lessen.lesinhoud = "Web Frontend Advanced";
-  lessen.lesgever = "Lector X";
+  // Wijzigen/aanvullen van de inhoud
+  lessons.subject = "Web Frontend Advanced";
+  lessons.lector = "Lector X";
 
   // Dot notatie
-  divJSONFeedback.innerHTML = `De lessen <strong>${lessen.lesinhoud}</strong> gaan door in <strong>${lessen.lokaal}</strong> op <strong>${lessen.dag}</strong> en worden gegeven door <strong>${lessen.lesgever}</strong>`;
+  divJSONFeedback.innerHTML = `De lessons <strong>${lessons.subject}</strong> gaan door in 
+    <strong>${lessons.room}</strong> op <strong>${lessons.day}</strong> en worden gegeven door <strong>${lessons.lector}</strong>`;
 
   // Array notatie
-  divJSONFeedback.innerHTML += ` <br/> De lessen ${lessen['lesinhoud']} gaan door in gebouw ${lessen['gebouw']}`;
+  divJSONFeedback.innerHTML += ` <br/> De lessons <strong>${lessons['subject']}</strong> gaan door in gebouw <strong>${lessons['building']}</strong>`;
 
   // Eventueel terug omzetten naar een string 
-  lesstring = JSON.stringify(lessen);
-  divJSONAsString.innerHTML = lesstring;
+  content = JSON.stringify(lessons);
+  divJSONAsString.textContent = content;
 
 }
