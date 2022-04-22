@@ -1,0 +1,22 @@
+{
+    "BST1": [
+      {
+        "subject": "JavaScript",
+        "module": "WFB",
+        "day": "maandag",
+        "room": "K1.012"
+      },
+      {
+        "subject": "Web Backend",
+        "module": "WBA",
+        "day": "Dinsdag",
+        "room": "U.002"
+      }
+    ],
+    "BST5": {
+      "subject": "Datacommunicatie Intro",
+      "module": "DCI",
+      "day": "Woensdag",
+      "room": "B208"
+    }
+  }
